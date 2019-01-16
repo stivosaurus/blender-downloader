@@ -1,0 +1,3 @@
+#!/bin/sh
+
+ln -sfn  $1  blender-2.80-daily 
