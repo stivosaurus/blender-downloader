@@ -1,19 +1,28 @@
 #!/usr/bin/env python3
-""" Downloader for Blender daily Linux builds """
+""" Downloader for Blender 2.8 daily Linux builds """
 
 import requests
 import wget
-# import shutil
 import subprocess
 import sys
+import os
 from bs4 import BeautifulSoup
 
 
+# site specific - change as needed
+HOME = '/home/steve'
+BLENDER_DIR = HOME + '/blender'
+DOWNLOAD_DIR = HOME + '/Downloads/'
+
+SYMLINK_NAME = 'blender-2.80-daily'
+LAST_FILENAME = './LAST_DOWNLOAD'
+
+
+# blender.org specific
 DAILY_BUILD_URL = 'https://builder.blender.org/download/'
 ROOT_URL = 'https://builder.blender.org'
+# html title tag for linux build
 TITLE_PROPERTY = 'Download Dev Linux 64 bit master'
-DOWNLOAD_DIR = '/home/steve/Downloads/'
-LAST_FILENAME = './LAST_DOWNLOAD'
 
 
 def parse_webpage_for_link(url):
@@ -32,13 +41,12 @@ def parse_webpage_for_link(url):
 
 
 def new_build_available(file_name):
-    """ is new build available? """
-    last_file = None
+    """ is a new build available? """
     try:
         with open(LAST_FILENAME, 'r') as infile:
             last_file = infile.read()
     except FileNotFoundError:
-        pass
+        last_file = None
     if file_name == last_file:
         raise Exception('No new build available')
     return True
@@ -48,14 +56,11 @@ def fetch_latest_build(download_link, destination_path):
     download_url = ROOT_URL + download_link
     print('getting: ' + download_url)
     wget.download(download_url, destination_path)
-    # same as wget, but using requests and shutil
-    # resp = requests.get(download_url, stream=True)
-    # with open(file_name, 'wb') as ofile:
-    #     shutil.copyfileobj(resp.raw, ofile)
 
 
 if __name__ == '__main__':
     try:
+        os.chdir(BLENDER_DIR)
         # download the tarball
         download_link = parse_webpage_for_link(DAILY_BUILD_URL)
         file_name = download_link.split('/')[-1:][0]
@@ -69,11 +74,14 @@ if __name__ == '__main__':
 
         # untar downloaded tarball
         status = subprocess.call('tar xvf ' + destination_path, shell=True)
-        # print("tar returned " + str(status))
+        if status:
+            raise Exception("tar returned {}".format(status))
 
-        # make symlink
-        status = subprocess.call('./make-link ' +
-                                 file_name.split('.tar.bz2')[:1][0],
-                                 shell=True)
+        # make directory symlink
+        #  cmd = ln -sfn tarfile-basename blender-2.80-daily
+        cmd = '{} {} {}'.format('ln -sfn',
+                                file_name.split('.tar.bz2')[0],
+                                SYMLINK_NAME)
+        status = subprocess.call(cmd, shell=True)
     except Exception as e:
         print(e, file=sys.stderr)

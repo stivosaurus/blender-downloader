@@ -1,0 +1,26 @@
+Script to download 64 bit linux build from daily builds at https://builder.blender.org/download/
+
+
+INSTALL
+
+Edit downloader.py:
+  set HOME to match your system	    # Do this!
+  set BLENDER_DIR and DOWNLOAD_DIR as needed
+  defaults are $HOME/blender and $HOME/Downloads
+
+Copy downloader.py to your bin directory.
+Make sure it is executable. ( chmod +x downloader.py )
+
+
+Directory Structure & Files
+
+$HOME/Downloads		# destination for downloaded archive
+$HOME/blender		# unpacked archives and work files
+  LAST_DOWNLOAD		# name of last downloaded archive
+  blender-2.80-daily	# symlink to latest build dir
+  blender-2.80-*-linux-glibc224-x86_64  # unpacked build dir. * is the hash
+
+The blender exe is $HOME/blender/blender-2.80-daily/blender
+This doesn't change when the build is updated so you can create a
+blender-daily symlink in your bin dir.
+
