@@ -11,6 +11,14 @@ Edit downloader.py:
 Copy downloader.py to your bin directory.
 Make sure it is executable. ( chmod +x downloader.py )
 
+RUN
+Run as downloader.py
+This will fetch the latest build from blender.org into DOWNLOAD_DIR,
+unpack it into BLENDER_DIR and symlink it into the
+blender-2.80-daily directory.
+
+To force a download, delete the LAST_DOWNLOAD file before running.
+
 
 Directory Structure & Files
 
@@ -20,7 +28,7 @@ $HOME/blender		# unpacked archives and work files
   blender-2.80-daily	# symlink to latest build dir
   blender-2.80-*-linux-glibc224-x86_64  # unpacked build dir. * is the hash
 
-The blender exe is $HOME/blender/blender-2.80-daily/blender
+
+The blender executable is $HOME/blender/blender-2.80-daily/blender
 This doesn't change when the build is updated so you can create a
 blender-daily symlink in your bin dir.
-
