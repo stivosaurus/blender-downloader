@@ -11,7 +11,8 @@ from bs4 import BeautifulSoup
 
 # site specific - change as needed
 HOME = '/home/steve'
-BLENDER_DIR = HOME + '/blender'
+# BLENDER_DIR = HOME + '/blender'
+BLENDER_DIR = '/projects/steve/blender'
 DOWNLOAD_DIR = HOME + '/Downloads/'
 
 SYMLINK_NAME = 'blender-2.80-daily'
@@ -22,7 +23,8 @@ LAST_FILENAME = './LAST_DOWNLOAD'
 DAILY_BUILD_URL = 'https://builder.blender.org/download/'
 ROOT_URL = 'https://builder.blender.org'
 # html title tag for linux build
-TITLE_PROPERTY = 'Download Dev Linux 64 bit master'
+#  this changed after 2.80 release
+TITLE_PROPERTY = 'Download Linux 64 bit build'
 
 
 def parse_webpage_for_link(url):
@@ -55,7 +57,11 @@ def new_build_available(file_name):
 def fetch_latest_build(download_link, destination_path):
     download_url = ROOT_URL + download_link
     print('getting: ' + download_url)
-    wget.download(download_url, destination_path)
+    # wget -O destination  url 
+    status = subprocess.call( f"wget -O {destination_path} {download_url}",
+                              shell=True)
+    if status:
+        raise Exception(f"wget returned {status}")
 
 
 if __name__ == '__main__':
