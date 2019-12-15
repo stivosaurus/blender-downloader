@@ -86,7 +86,7 @@ if __name__ == '__main__':
         # make directory symlink
         #  cmd = ln -sfn tarfile-basename blender-2.80-daily
         cmd = '{} {} {}'.format('ln -sfn',
-                                file_name.split('.tar.bz2')[0],
+                                file_name.split('.tar.xz')[0],
                                 SYMLINK_NAME)
         status = subprocess.call(cmd, shell=True)
     except Exception as e:
