@@ -15,7 +15,7 @@ HOME = '/home/steve'
 BLENDER_DIR = '/projects/steve/blender'
 DOWNLOAD_DIR = HOME + '/Downloads/'
 
-SYMLINK_NAME = 'blender-2.80-daily'
+SYMLINK_NAME = 'blender-daily'
 LAST_FILENAME = './LAST_DOWNLOAD'
 
 
@@ -84,7 +84,7 @@ if __name__ == '__main__':
             raise Exception("tar returned {}".format(status))
 
         # make directory symlink
-        #  cmd = ln -sfn tarfile-basename blender-2.80-daily
+        #  cmd = ln -sfn tarfile-basename blender-daily
         cmd = '{} {} {}'.format('ln -sfn',
                                 file_name.split('.tar.xz')[0],
                                 SYMLINK_NAME)
